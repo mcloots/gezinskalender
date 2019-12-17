@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --o",
+    "start": "ng serve --o --ssl true --port 2078",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pwa": "http-server -p 8080 -c-1 dist/gezinskalender"
+    "pwa": "http-server -p 8080 -c-1 dist/gezinskalender --ssl true"
   },
   "private": true,
   "dependencies": {
@@ -16,12 +16,14 @@
     "@angular/common": "~9.0.0-rc.6",
     "@angular/compiler": "~9.0.0-rc.6",
     "@angular/core": "~9.0.0-rc.6",
+    "@angular/fire": "^5.2.3",
     "@angular/forms": "~9.0.0-rc.6",
     "@angular/platform-browser": "~9.0.0-rc.6",
     "@angular/platform-browser-dynamic": "~9.0.0-rc.6",
     "@angular/pwa": "^0.803.20",
     "@angular/router": "~9.0.0-rc.6",
     "@angular/service-worker": "~9.0.0-rc.6",
+    "firebase": "^7.6.0",
     "http-server": "^0.12.0",
     "rxjs": "~6.5.3",
     "tslib": "^1.10.0",
