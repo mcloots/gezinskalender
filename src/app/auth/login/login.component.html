@@ -4,3 +4,9 @@
        Log in with Facebook
     </button>
  </div>
+
+ <div *ngIf="gebruikers">
+    <ul>
+       <li *ngFor="let g of gebruikers">{{g.naam}}</li>     
+    </ul>
+ </div>
