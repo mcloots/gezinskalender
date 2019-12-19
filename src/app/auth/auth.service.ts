@@ -19,18 +19,50 @@ export class AuthService {
     return this.firestore.collectionGroup<Gebruiker>('gebruikers').snapshotChanges();
   }
 
+  getGebruikersByEmail(email: string) {
+    let gebruikersRef = this.firestore.collectionGroup<Gebruiker>('gebruikers', ref => ref.where('email', '==', email));
+    return gebruikersRef;
+  }
+
+  updateGebruiker(gezinID: string, gebruiker: Gebruiker){
+    //delete gebruiker.id;
+    this.firestore.collection('gezinnen').doc(gezinID).collection('gebruikers').doc(gebruiker.id).update(gebruiker);
+}
+
   // Sign in with Facebook
   FacebookAuth() {
     return this.AuthLogin(new auth.FacebookAuthProvider());
-  }  
+  }
 
   // Auth logic to run auth providers
   AuthLogin(provider) {
+    //Make sure to pass in the current context so we can call class methods
+    let classContext = this;
     return this.afAuth.auth.signInWithPopup(provider)
-    .then((result) => {
-        console.log('Inloggen is gelukt!')
-    }).catch((error) => {
+      .then((result) => {
+        console.log(result);
+        this.getGebruikersByEmail(result.user.email).get().subscribe(gebruiker => {
+          if (gebruiker.empty) {
+            //insert gezin + gebruiker
+          } else {
+            //update gebruiker met fb uid
+            gebruiker.forEach(function (doc) {
+              //console.log(doc.id); // id of doc
+              //console.log(doc.data()); // data of doc
+              let updatedGebruiker = doc.data() as Gebruiker;
+              updatedGebruiker.id = doc.id;
+              //path to gezin
+              let gezin = doc.ref.parent.parent;
+              updatedGebruiker.fbid = result.user.uid;
+              classContext.updateGebruiker(gezin.id, updatedGebruiker);
+            });
+          }
+
+        });
+        //result.user.uid = facebook id
+        //result.user.email = email
+      }).catch((error) => {
         console.log(error)
-    })
+      })
   }
 }
