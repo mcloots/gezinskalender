@@ -3,6 +3,8 @@ import { auth } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Gebruiker } from './models/gebruiker.model';
+import { GezinService } from '../gezin/gezin.service';
+import { Gezin } from '../models/gezin.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +13,17 @@ export class AuthService {
 
   constructor(
     public afAuth: AngularFireAuth, // Inject Firebase auth service
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private gezinService: GezinService
   ) { }
 
   getGebruikers() {
     //collectionGroup --> query all subcollections
     return this.firestore.collectionGroup<Gebruiker>('gebruikers').snapshotChanges();
+  }
+
+  createGebruiker(gezinID: string, gebruiker: Gebruiker) {
+    return this.firestore.collection('gezinnen').doc(gezinID).collection('gebruikers').add(gebruiker);
   }
 
   getGebruikersByEmail(email: string) {
@@ -44,6 +51,18 @@ export class AuthService {
         this.getGebruikersByEmail(result.user.email).get().subscribe(gebruiker => {
           if (gebruiker.empty) {
             //insert gezin + gebruiker
+            let addGebruiker = new Gebruiker();
+            addGebruiker.email = result.user.email;
+            addGebruiker.fbid = result.user.uid;
+
+            let gezin = new Gezin();
+            gezin.gebruikers = [];
+            gezin.gebruikers.push(addGebruiker);
+            var dataGezin = JSON.parse(JSON.stringify(gezin));
+            var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
+            this.gezinService.createGezin(dataGezin).then(g => {
+              classContext.createGebruiker(g.id,dataGebruiker);
+            });
           } else {
             //update gebruiker met fb uid
             gebruiker.forEach(function (doc) {
