@@ -52,6 +52,7 @@ export class AuthService {
           if (gebruiker.empty) {
             //insert gezin + gebruiker
             let addGebruiker = new Gebruiker();
+            addGebruiker.gebruikersnaam = result.user.email;
             addGebruiker.email = result.user.email;
             addGebruiker.fbid = result.user.uid;
 
@@ -62,18 +63,21 @@ export class AuthService {
             var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
             this.gezinService.createGezin(dataGezin).then(g => {
               classContext.createGebruiker(g.id,dataGebruiker);
+
+              //add gebruiker to localstorage
+              localStorage.setItem('gebruiker', JSON.stringify(addGebruiker));
             });
           } else {
             //update gebruiker met fb uid
             gebruiker.forEach(function (doc) {
-              //console.log(doc.id); // id of doc
-              //console.log(doc.data()); // data of doc
               let updatedGebruiker = doc.data() as Gebruiker;
               updatedGebruiker.id = doc.id;
               //path to gezin
               let gezin = doc.ref.parent.parent;
               updatedGebruiker.fbid = result.user.uid;
               classContext.updateGebruiker(gezin.id, updatedGebruiker);
+
+              localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
             });
           }
 
