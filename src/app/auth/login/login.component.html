@@ -1,10 +1,3 @@
-<!-- Calling FacebookAuth Api from AuthService -->
-<div class="formGroup">
-    <button type="button" (click)="authService.FacebookAuth()">
-       Log in with Facebook
-    </button>
- </div>
-
  <div *ngIf="gebruikers">
     <ul>
        <li *ngFor="let g of gebruikers">{{g.email}} ({{g.naam}})</li>     

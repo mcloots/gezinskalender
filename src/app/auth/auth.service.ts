@@ -5,17 +5,29 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Gebruiker } from './models/gebruiker.model';
 import { GezinService } from '../gezin/gezin.service';
 import { Gezin } from '../models/gezin.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  userData: any; // Save logged in user data
+  isLoggedin = new BehaviorSubject(false);
+  
   constructor(
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     private firestore: AngularFirestore,
     private gezinService: GezinService
-  ) { }
+  ) { 
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userData = user;
+        this.isLoggedin.next(true);
+      } else {
+        this.isLoggedin.next(false);
+      }
+    })
+  }
 
   getGebruikers() {
     //collectionGroup --> query all subcollections
@@ -37,12 +49,12 @@ export class AuthService {
 }
 
   // Sign in with Facebook
-  FacebookAuth() {
-    return this.AuthLogin(new auth.FacebookAuthProvider());
+  facebookAuth() {
+    return this.authLogin(new auth.FacebookAuthProvider());
   }
 
   // Auth logic to run auth providers
-  AuthLogin(provider) {
+  authLogin(provider) {
     //Make sure to pass in the current context so we can call class methods
     let classContext = this;
     return this.afAuth.auth.signInWithPopup(provider)
@@ -87,5 +99,11 @@ export class AuthService {
       }).catch((error) => {
         console.log(error)
       })
+  }
+
+  logOut() {
+    this.afAuth.auth.signOut().then(result => {
+      localStorage.removeItem('gebruiker');
+    });
   }
 }

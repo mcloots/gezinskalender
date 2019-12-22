@@ -1,1 +1,5 @@
+<button *ngIf="!isLoggedIn" type="button" (click)="authService.facebookAuth()">
+    Log in with Facebook
+ </button>
+<button *ngIf="isLoggedIn" (click)="logout()">Uitloggen</button>
 <router-outlet></router-outlet>
