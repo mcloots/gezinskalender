@@ -8,16 +8,19 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "pwa": "http-server -p 8080 -c-1 dist/gezinskalender --ssl true"
+    "pwa": "http-server -p 8080 -c-1 dist/gezinskalender --ssl true",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && ng serve -o --ssl true --port 2078"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.0.0-rc.6",
+    "@angular/cdk": "~9.0.0-rc.6",
     "@angular/common": "~9.0.0-rc.6",
     "@angular/compiler": "~9.0.0-rc.6",
     "@angular/core": "~9.0.0-rc.6",
     "@angular/fire": "^5.2.3",
     "@angular/forms": "~9.0.0-rc.6",
+    "@angular/material": "^9.0.0-rc.6",
     "@angular/platform-browser": "~9.0.0-rc.6",
     "@angular/platform-browser-dynamic": "~9.0.0-rc.6",
     "@angular/pwa": "^0.803.20",
@@ -25,7 +28,24 @@
     "@angular/service-worker": "~9.0.0-rc.6",
     "firebase": "^7.6.0",
     "http-server": "^0.12.0",
+    "ajv": "6.10.0",
+    "arrive": "2.4.1",
+    "bootstrap": "4.3.1",
+    "bootstrap-material-design": "4.1.2",
+    "bootstrap-notify": "3.1.3",
+    "chartist": "0.11.2",
+    "classlist.js": "1.1.20150312",
+    "core-js": "3.1.3",
+    "express": "4.17.1",
+    "googleapis": "40.0.0",
+    "hammerjs": "2.0.8",
+    "jquery": "3.4.1",
+    "moment": "2.24.0",
+    "perfect-scrollbar": "1.1.0",
+    "popper.js": "1.15.0",
     "rxjs": "~6.5.3",
+    "rxjs-compat": "6.5.3",
+    "web-animations-js": "2.3.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
@@ -48,6 +68,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.6.4"
+    "typescript": "~3.6.4",
+    "node-sass": "^4.13.0",
+    "sass-loader": "^7.1.0"
   }
 }
