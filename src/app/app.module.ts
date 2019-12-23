@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { LoginComponent } from './auth/login/login.component';
+import { LoginRegisterComponent } from './auth/login-register/login-register.component';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { SharedModule } from './shared/shared.module';
@@ -18,7 +18,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginRegisterComponent,
     AdminLayoutComponent
   ],
   imports: [

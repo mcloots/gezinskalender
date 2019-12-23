@@ -6,6 +6,7 @@ import { Gebruiker } from './models/gebruiker.model';
 import { GezinService } from '../gezin/gezin.service';
 import { Gezin } from '../models/gezin.model';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,17 +14,21 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
   userData: any; // Save logged in user data
   isLoggedin = new BehaviorSubject(false);
-  
+  isLoggedinProp: boolean = false;
+
   constructor(
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     private firestore: AngularFirestore,
-    private gezinService: GezinService
-  ) { 
+    private gezinService: GezinService,
+    private router: Router
+  ) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userData = user;
+        this.isLoggedinProp = true;
         this.isLoggedin.next(true);
       } else {
+        this.isLoggedinProp = false;
         this.isLoggedin.next(false);
       }
     })
@@ -43,10 +48,10 @@ export class AuthService {
     return gebruikersRef;
   }
 
-  updateGebruiker(gezinID: string, gebruiker: Gebruiker){
+  updateGebruiker(gezinID: string, gebruiker: Gebruiker) {
     //delete gebruiker.id;
     this.firestore.collection('gezinnen').doc(gezinID).collection('gebruikers').doc(gebruiker.id).update(gebruiker);
-}
+  }
 
   // Sign in with Facebook
   facebookAuth() {
@@ -74,7 +79,7 @@ export class AuthService {
             var dataGezin = JSON.parse(JSON.stringify(gezin));
             var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
             this.gezinService.createGezin(dataGezin).then(g => {
-              classContext.createGebruiker(g.id,dataGebruiker);
+              classContext.createGebruiker(g.id, dataGebruiker);
 
               //add gebruiker to localstorage
               localStorage.setItem('gebruiker', JSON.stringify(addGebruiker));
@@ -101,9 +106,14 @@ export class AuthService {
       })
   }
 
+  isLoggedIn() {
+    return this.isLoggedinProp;
+  }
+
   logOut() {
     this.afAuth.auth.signOut().then(result => {
       localStorage.removeItem('gebruiker');
+      this.router.navigate(['/login']);
     });
   }
 }
