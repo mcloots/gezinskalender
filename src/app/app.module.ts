@@ -14,12 +14,14 @@ import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/firestor
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { CheckPasswordDirective } from './auth/directives/check-password.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginRegisterComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    CheckPasswordDirective
   ],
   imports: [
     BrowserModule,
