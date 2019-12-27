@@ -4,6 +4,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { AdminLayoutModule } from './layouts/admin-layout/admin-layout.module';
 import { AuthGuard } from './auth/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +28,13 @@ export const routes: Routes = [
   },{
     path: 'logout',
     component: LoginRegisterComponent,
+    pathMatch: 'full'
+  },{
+    path: 'verify-email',
+    component: VerifyEmailComponent
+  },{
+    path: 'resetpassword',
+    component: ResetPasswordComponent,
     pathMatch: 'full'
   }, {
     path: '',

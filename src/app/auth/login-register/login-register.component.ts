@@ -22,7 +22,7 @@ export class LoginRegisterComponent implements OnInit {
     //subscribe on loggedin to redirect to dashboard
     this.authService.isLoggedin.subscribe(isLoggedIn => {
       if(isLoggedIn) {
-        this.router.navigate(['/dashboard']);
+        //this.router.navigate(['/dashboard']);
       }
     })
 
@@ -47,17 +47,32 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   fbLogin() {
-    this.authService.facebookAuth().then();
+    this.authService.facebookAuth().then(r => {
+      this.router.navigate(['/dashboard']);
+    });
   }
 
   postRegisterLogin() {
     console.log(this.loginRegisterModel);
     if(!this.isLogin) {
+      let isValid : boolean = true;
+      //Registreren
       //client side check passwords
       if(this.loginRegisterModel.password !== this.loginRegisterModel.passwordConfirm) {
-       
+        isValid = false;
         this.currentForm.form.controls["passwordConfirm"].setErrors({ 'incorrect': true });
       }
+
+      if(isValid) {
+        this.authService.register(this.loginRegisterModel.email, this.loginRegisterModel.password).then(result => {
+          //this.router.navigate(['/dashboard']);
+        });
+      }
+    } else {
+      //Inloggen
+      this.authService.login(this.loginRegisterModel.email, this.loginRegisterModel.password).then(result => {
+        //this.router.navigate(['/dashboard']);
+      });
     }
   }
 

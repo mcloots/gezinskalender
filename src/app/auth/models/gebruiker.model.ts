@@ -1,8 +1,13 @@
 export class Gebruiker {
     id: string;
-    fbid: string;
+    uniqueid: string;
     gebruikersnaam: string;
     naam: string;
     rol: string;
     email: string;
+    isRegisteredEmail: boolean;
+    isRegisteredFacebook: boolean;
+    isEmailVerified: boolean;
+    linkeduniqueIDFB: string;
+    linkeduniqueIDEmail:string;
 }

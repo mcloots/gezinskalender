@@ -15,13 +15,17 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { CheckPasswordDirective } from './auth/directives/check-password.directive';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginRegisterComponent,
     AdminLayoutComponent,
-    CheckPasswordDirective
+    CheckPasswordDirective,
+    VerifyEmailComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

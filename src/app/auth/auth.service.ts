@@ -58,6 +58,70 @@ export class AuthService {
     return this.authLogin(new auth.FacebookAuthProvider());
   }
 
+  async login(email: string, password: string) {
+    var result = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
+    if (result.user.emailVerified) {
+      this.getGebruikersByEmail(result.user.email).get().subscribe(gebruiker => {
+        gebruiker.forEach(function (doc) {
+          let updatedGebruiker = doc.data() as Gebruiker;
+          localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
+        });
+      });
+      this.router.navigate(['dashboard']);
+    } else {
+      this.logOut();
+    }
+  }
+
+  async register(email: string, password: string) {
+    let classContext = this;
+    var result = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+    this.sendEmailVerification();
+    if (result.user) {
+      this.getGebruikersByEmail(result.user.email).get().subscribe(gebruiker => {
+        if (gebruiker.empty) {
+          //insert gezin + gebruiker
+          let addGebruiker = new Gebruiker();
+          addGebruiker.isRegisteredEmail = true;
+          addGebruiker.gebruikersnaam = result.user.email;
+          addGebruiker.email = result.user.email;
+          addGebruiker.uniqueid = result.user.uid;
+          addGebruiker.isEmailVerified = result.user.emailVerified;
+
+          let gezin = new Gezin();
+          gezin.gebruikers = [];
+          gezin.gebruikers.push(addGebruiker);
+          var dataGezin = JSON.parse(JSON.stringify(gezin));
+          var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
+          this.gezinService.createGezin(dataGezin).then(g => {
+            classContext.createGebruiker(g.id, dataGebruiker);
+          });
+        } else {
+          //update gebruiker met fb uid
+          gebruiker.forEach(function (doc) {
+            let updatedGebruiker = doc.data() as Gebruiker;
+            updatedGebruiker.id = doc.id;
+            //path to gezin
+            let gezin = doc.ref.parent.parent;
+            updatedGebruiker.linkeduniqueIDEmail = result.user.uid;
+            classContext.updateGebruiker(gezin.id, updatedGebruiker);
+          });
+        }
+      });
+
+      this.logOut();
+    }
+  }
+
+  async sendEmailVerification() {
+    await this.afAuth.auth.currentUser.sendEmailVerification()
+    this.router.navigate(['verify-email']);
+  }
+
+  async sendPasswordResetEmail(passwordResetEmail: string) {
+    return await this.afAuth.auth.sendPasswordResetEmail(passwordResetEmail);
+  }
+
   // Auth logic to run auth providers
   authLogin(provider) {
     //Make sure to pass in the current context so we can call class methods
@@ -65,13 +129,14 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((result) => {
         console.log(result);
-        this.getGebruikersByEmail(result.user.email).get().subscribe(gebruiker => {
+        this.getGebruikersByEmail((result.additionalUserInfo.profile as any).email).get().subscribe(gebruiker => {
           if (gebruiker.empty) {
             //insert gezin + gebruiker
             let addGebruiker = new Gebruiker();
-            addGebruiker.gebruikersnaam = result.user.email;
-            addGebruiker.email = result.user.email;
-            addGebruiker.fbid = result.user.uid;
+            addGebruiker.isRegisteredFacebook = true;
+            addGebruiker.gebruikersnaam = (result.additionalUserInfo.profile as any).name;
+            addGebruiker.email = (result.additionalUserInfo.profile as any).email;
+            addGebruiker.uniqueid = result.user.uid;
 
             let gezin = new Gezin();
             gezin.gebruikers = [];
@@ -91,7 +156,7 @@ export class AuthService {
               updatedGebruiker.id = doc.id;
               //path to gezin
               let gezin = doc.ref.parent.parent;
-              updatedGebruiker.fbid = result.user.uid;
+              updatedGebruiker.linkeduniqueIDFB = result.user.uid;
               classContext.updateGebruiker(gezin.id, updatedGebruiker);
 
               localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
