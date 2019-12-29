@@ -6,6 +6,8 @@ import { AuthGuard } from './auth/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { GezinDashboardComponent } from './gezin/gezin-dashboard/gezin-dashboard.component';
+import { GezinModule } from './gezin/gezin.module';
 
 export const routes: Routes = [
   {
@@ -13,29 +15,33 @@ export const routes: Routes = [
     redirectTo: 'dashboard',
     pathMatch: 'full',
     canActivate: [AuthGuard]
-  },{
+  }, {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard]
-  },{
+  }, {
     path: 'login',
     component: LoginRegisterComponent,
     pathMatch: 'full'
-  },{
+  }, {
     path: 'register',
     component: LoginRegisterComponent,
     pathMatch: 'full'
-  },{
+  }, {
     path: 'logout',
     component: LoginRegisterComponent,
     pathMatch: 'full'
-  },{
+  }, {
     path: 'verify-email',
     component: VerifyEmailComponent
-  },{
+  }, {
     path: 'resetpassword',
     component: ResetPasswordComponent,
     pathMatch: 'full'
+  }, {
+    path: 'gezin-dashboard',
+    component: GezinDashboardComponent,
+    canActivate: [AuthGuard]
   }, {
     path: '',
     component: AdminLayoutComponent,
@@ -45,4 +51,4 @@ export const routes: Routes = [
       canActivate: [AuthGuard]
     }]
   }
-  ];
+];

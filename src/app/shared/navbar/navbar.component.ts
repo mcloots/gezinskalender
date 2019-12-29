@@ -111,6 +111,9 @@ export class NavbarComponent implements OnInit {
 
     getTitle(){
       var titlee = this.location.prepareExternalUrl(this.location.path());
+      if(titlee.includes('gezin-dashboard')) {
+         return "Mijn gezin";
+      }
       if(titlee.charAt(0) === '#'){
           titlee = titlee.slice( 1 );
       }

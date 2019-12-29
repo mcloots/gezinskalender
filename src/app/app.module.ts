@@ -17,6 +17,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { CheckPasswordDirective } from './auth/directives/check-password.directive';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { GezinModule } from './gezin/gezin.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    GezinModule
   ],
   providers: [AngularFirestore],
   bootstrap: [AppComponent]

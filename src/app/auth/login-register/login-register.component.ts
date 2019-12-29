@@ -48,7 +48,7 @@ export class LoginRegisterComponent implements OnInit {
 
   fbLogin() {
     this.authService.facebookAuth().then(r => {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/gezin-dashboard']);
     });
   }
 

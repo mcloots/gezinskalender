@@ -13,8 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   userData: any; // Save logged in user data
-  isLoggedin = new BehaviorSubject(false);
-  isLoggedinProp: boolean = false;
+  isLoggedin = new BehaviorSubject(localStorage.getItem('gebruiker') ? true : false);
 
   constructor(
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -25,10 +24,8 @@ export class AuthService {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userData = user;
-        this.isLoggedinProp = true;
         this.isLoggedin.next(true);
       } else {
-        this.isLoggedinProp = false;
         this.isLoggedin.next(false);
       }
     })
@@ -67,7 +64,7 @@ export class AuthService {
           localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
         });
       });
-      this.router.navigate(['dashboard']);
+      this.router.navigate(['gezin-dashboard']);
     } else {
       this.logOut();
     }
@@ -172,7 +169,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return this.isLoggedinProp;
+    return this.isLoggedin.value;
   }
 
   logOut() {

@@ -43,9 +43,9 @@ export class SidebarComponent implements OnInit {
   };
 
   isShown(item: RouteInfo): boolean {
-    if (item.loggedin && this.authService.isLoggedinProp) {
+    if (item.loggedin && this.authService.isLoggedIn()) {
       return true;
-    } else if (!item.loggedin && !this.authService.isLoggedinProp) {
+    } else if (!item.loggedin && !this.authService.isLoggedIn()) {
       return true;
     }
 
