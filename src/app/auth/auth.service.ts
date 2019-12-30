@@ -56,15 +56,16 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
+    let classContext = this;
     var result = await this.afAuth.auth.signInWithEmailAndPassword(email, password);
     if (result.user.emailVerified) {
       this.getGebruikersByEmail(result.user.email).get().subscribe(gebruiker => {
         gebruiker.forEach(function (doc) {
           let updatedGebruiker = doc.data() as Gebruiker;
           localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
+          classContext.router.navigate(['gezin-dashboard']);
         });
       });
-      this.router.navigate(['gezin-dashboard']);
     } else {
       this.logOut();
     }
@@ -145,6 +146,7 @@ export class AuthService {
 
               //add gebruiker to localstorage
               localStorage.setItem('gebruiker', JSON.stringify(addGebruiker));
+              classContext.router.navigate(['/gezin-dashboard']);
             });
           } else {
             //update gebruiker met fb uid
@@ -157,6 +159,7 @@ export class AuthService {
               classContext.updateGebruiker(gezin.id, updatedGebruiker);
 
               localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
+              classContext.router.navigate(['/gezin-dashboard']);
             });
           }
 

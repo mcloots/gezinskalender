@@ -18,6 +18,10 @@ export class GezinService {
     return this.getGebruiker().get();
   }
 
+  getGezinByID(gezinID: string) {
+    return this.firestore.collection('gezinnen').doc(gezinID).snapshotChanges();
+  }
+
   createGezin(gezin: Gezin) {
     return this.firestore.collection('gezinnen').add(gezin);
   }
