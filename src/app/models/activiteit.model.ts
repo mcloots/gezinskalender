@@ -1,7 +1,7 @@
 export class Activiteit {
     id: string;
     omschrijving: string;
-    tijdstip: Date;
+    datum: Date;
     gezinid: string;
     gebruikerid: string;
 }

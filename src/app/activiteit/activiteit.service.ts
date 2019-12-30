@@ -10,7 +10,7 @@ export class ActiviteitService {
   constructor(private firestore: AngularFirestore) { }
 
    getActiviteitenByGezinID(gezinID: string) {
-    return this.firestore.collection('activiteiten', ref => ref.where('gezinid', '==', gezinID)).snapshotChanges();
+    return this.firestore.collection('activiteiten', ref => ref.where('gezinid', '==', gezinID).orderBy('datum','asc')).snapshotChanges();
   }
 
   createActiviteit(activiteit: Activiteit) {

@@ -7,9 +7,11 @@
                 <div class="card card-stats">
                     <div class="card-header card-header-warning card-header-icon">
                         <div class="card-icon">
-                            <i class="material-icons">person</i>
+                            <i class="material-icons">airport_shuttle</i>
                         </div>
-                        <p class="card-category">{{activiteit.omschrijving}}</p>
+                        <p class="card-category">{{activiteit.datum | date:'d MMMM'}}</p>
+                        <h3 class="card-title" *ngIf="activiteit.omschrijving">{{activiteit.omschrijving}}
+                        </h3>
                     </div>
                 </div>
             </div>

@@ -20,6 +20,7 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
 import { GezinModule } from './gezin/gezin.module';
 import { ActiviteitDashboardComponent } from './activiteit/activiteit-dashboard/activiteit-dashboard.component';
 import { ActiviteitFormComponent } from './activiteit/activiteit-form/activiteit-form.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ActiviteitFormComponent } from './activiteit/activiteit-form/activiteit
     BrowserAnimationsModule,
     GezinModule
   ],
-  providers: [AngularFirestore],
+  providers: [AngularFirestore,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-BE' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

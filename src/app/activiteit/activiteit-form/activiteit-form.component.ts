@@ -12,6 +12,7 @@ import { ActiviteitService } from '../activiteit.service';
 export class ActiviteitFormComponent implements OnInit {
   isAdd: boolean = true;
   activiteitModel: Activiteit = new Activiteit();
+  minDate = new Date();
   constructor(private activiteitService: ActiviteitService, private router: Router, private route: ActivatedRoute) {
   }
 
