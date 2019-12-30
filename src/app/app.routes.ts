@@ -8,6 +8,7 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { GezinDashboardComponent } from './gezin/gezin-dashboard/gezin-dashboard.component';
 import { GezinModule } from './gezin/gezin.module';
+import { GezinslidFormComponent } from './gezin/gezinslid-form/gezinslid-form.component';
 
 export const routes: Routes = [
   {
@@ -41,6 +42,10 @@ export const routes: Routes = [
   }, {
     path: 'gezin-dashboard',
     component: GezinDashboardComponent,
+    canActivate: [AuthGuard]
+  }, {
+    path: 'gezinslid-form',
+    component: GezinslidFormComponent,
     canActivate: [AuthGuard]
   }, {
     path: '',

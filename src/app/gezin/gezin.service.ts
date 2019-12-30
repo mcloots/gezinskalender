@@ -18,8 +18,8 @@ export class GezinService {
     return this.getGebruiker().get();
   }
 
-  getGezinByID(gezinID: string) {
-    return this.firestore.collection('gezinnen').doc(gezinID).snapshotChanges();
+  getGebruikersByGezinID(gezinID: string) {
+    return this.firestore.collection('gebruikers', ref => ref.where('gezinid', '==', gezinID)).snapshotChanges();
   }
 
   createGezin(gezin: Gezin) {

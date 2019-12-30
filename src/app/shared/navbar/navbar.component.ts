@@ -114,6 +114,9 @@ export class NavbarComponent implements OnInit {
       if(titlee.includes('gezin-dashboard')) {
          return "Mijn gezin";
       }
+      if(titlee.includes('gezinslid-form')) {
+        return "Mijn gezin";
+     }
       if(titlee.charAt(0) === '#'){
           titlee = titlee.slice( 1 );
       }

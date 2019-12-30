@@ -1,14 +1,15 @@
 <div class="main-content">
     <div class="container-fluid">
-        <div class="row" *ngIf="mijnGezin">
-            <div *ngFor="let gebruiker of mijnGezin.gebruikers" class="col-lg-3 col-md-6 col-sm-6">
+        <div class="row">
+            <div class="col-12"><button mat-raised-button type="button" class="btn btn-danger" (click)="addGezinslid()">Gezinslid toevoegen</button></div>
+            <div *ngFor="let gebruiker of gebruikers |async" class="col-lg-3 col-md-6 col-sm-6">
                 <div class="card card-stats">
                     <div class="card-header card-header-warning card-header-icon">
                         <div class="card-icon">
                             <i class="material-icons">content_copy</i>
                         </div>
                         <p class="card-category">{{gebruiker.email}}</p>
-                        <h3 class="card-title">49/50
+                        <h3 class="card-title">{{gebruiker.gezinid}}
                             <small>GB</small>
                         </h3>
                     </div>

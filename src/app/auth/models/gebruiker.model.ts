@@ -10,4 +10,5 @@ export class Gebruiker {
     isEmailVerified: boolean;
     linkeduniqueIDFB: string;
     linkeduniqueIDEmail:string;
+    gezinid: string;
 }

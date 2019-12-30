@@ -32,22 +32,21 @@ export class AuthService {
   }
 
   getGebruikers() {
-    //collectionGroup --> query all subcollections
-    return this.firestore.collectionGroup<Gebruiker>('gebruikers').snapshotChanges();
+    return this.firestore.collection<Gebruiker>('gebruikers').snapshotChanges();
   }
 
-  createGebruiker(gezinID: string, gebruiker: Gebruiker) {
-    return this.firestore.collection('gezinnen').doc(gezinID).collection('gebruikers').add(gebruiker);
+  createGebruiker(gebruiker: Gebruiker) {
+    return this.firestore.collection('gebruikers').add(gebruiker);
   }
 
   getGebruikersByEmail(email: string) {
-    let gebruikersRef = this.firestore.collectionGroup<Gebruiker>('gebruikers', ref => ref.where('email', '==', email));
+    let gebruikersRef = this.firestore.collection<Gebruiker>('gebruikers', ref => ref.where('email', '==', email));
     return gebruikersRef;
   }
 
-  updateGebruiker(gezinID: string, gebruiker: Gebruiker) {
+  updateGebruiker(gebruiker: Gebruiker) {
     //delete gebruiker.id;
-    this.firestore.collection('gezinnen').doc(gezinID).collection('gebruikers').doc(gebruiker.id).update(gebruiker);
+    this.firestore.collection('gebruikers').doc(gebruiker.id).update(gebruiker);
   }
 
   // Sign in with Facebook
@@ -63,6 +62,7 @@ export class AuthService {
         gebruiker.forEach(function (doc) {
           let updatedGebruiker = doc.data() as Gebruiker;
           localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
+
           classContext.router.navigate(['gezin-dashboard']);
         });
       });
@@ -87,22 +87,20 @@ export class AuthService {
           addGebruiker.isEmailVerified = result.user.emailVerified;
 
           let gezin = new Gezin();
-          gezin.gebruikers = [];
-          gezin.gebruikers.push(addGebruiker);
           var dataGezin = JSON.parse(JSON.stringify(gezin));
-          var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
+
           this.gezinService.createGezin(dataGezin).then(g => {
-            classContext.createGebruiker(g.id, dataGebruiker);
+            addGebruiker.gezinid = g.id;
+            var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
+            classContext.createGebruiker(dataGebruiker);
           });
         } else {
-          //update gebruiker met fb uid
+          //update gebruiker met fb uid of gezinslid dat is toegevoegd
           gebruiker.forEach(function (doc) {
             let updatedGebruiker = doc.data() as Gebruiker;
             updatedGebruiker.id = doc.id;
-            //path to gezin
-            let gezin = doc.ref.parent.parent;
             updatedGebruiker.linkeduniqueIDEmail = result.user.uid;
-            classContext.updateGebruiker(gezin.id, updatedGebruiker);
+            classContext.updateGebruiker(updatedGebruiker);
           });
         }
       });
@@ -137,15 +135,16 @@ export class AuthService {
             addGebruiker.uniqueid = result.user.uid;
 
             let gezin = new Gezin();
-            gezin.gebruikers = [];
-            gezin.gebruikers.push(addGebruiker);
             var dataGezin = JSON.parse(JSON.stringify(gezin));
-            var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
+
             this.gezinService.createGezin(dataGezin).then(g => {
-              classContext.createGebruiker(g.id, dataGebruiker);
+              addGebruiker.gezinid = g.id;
+              var dataGebruiker = JSON.parse(JSON.stringify(addGebruiker));
+              classContext.createGebruiker(dataGebruiker).then();
 
               //add gebruiker to localstorage
               localStorage.setItem('gebruiker', JSON.stringify(addGebruiker));
+
               classContext.router.navigate(['/gezin-dashboard']);
             });
           } else {
@@ -153,12 +152,12 @@ export class AuthService {
             gebruiker.forEach(function (doc) {
               let updatedGebruiker = doc.data() as Gebruiker;
               updatedGebruiker.id = doc.id;
-              //path to gezin
-              let gezin = doc.ref.parent.parent;
+             
               updatedGebruiker.linkeduniqueIDFB = result.user.uid;
-              classContext.updateGebruiker(gezin.id, updatedGebruiker);
+              classContext.updateGebruiker(updatedGebruiker);
 
               localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
+
               classContext.router.navigate(['/gezin-dashboard']);
             });
           }
@@ -178,6 +177,7 @@ export class AuthService {
   logOut() {
     this.afAuth.auth.signOut().then(result => {
       localStorage.removeItem('gebruiker');
+      localStorage.removeItem('gezinID');
       this.router.navigate(['/login']);
     });
   }
