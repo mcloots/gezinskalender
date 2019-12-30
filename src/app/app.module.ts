@@ -18,6 +18,8 @@ import { CheckPasswordDirective } from './auth/directives/check-password.directi
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { GezinModule } from './gezin/gezin.module';
+import { ActiviteitDashboardComponent } from './activiteit/activiteit-dashboard/activiteit-dashboard.component';
+import { ActiviteitFormComponent } from './activiteit/activiteit-form/activiteit-form.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { GezinModule } from './gezin/gezin.module';
     AdminLayoutComponent,
     CheckPasswordDirective,
     VerifyEmailComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    ActiviteitDashboardComponent,
+    ActiviteitFormComponent
   ],
   imports: [
     BrowserModule,

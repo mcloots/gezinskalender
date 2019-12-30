@@ -1,0 +1,18 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12"><button mat-raised-button type="button" class="btn btn-danger mb-4"
+                    (click)="addActiviteit()">Activiteit toevoegen</button></div>
+            <div *ngFor="let activiteit of activiteiten |async" class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">person</i>
+                        </div>
+                        <p class="card-category">{{activiteit.omschrijving}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

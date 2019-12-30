@@ -9,11 +9,13 @@ import { ResetPasswordComponent } from './auth/reset-password/reset-password.com
 import { GezinDashboardComponent } from './gezin/gezin-dashboard/gezin-dashboard.component';
 import { GezinModule } from './gezin/gezin.module';
 import { GezinslidFormComponent } from './gezin/gezinslid-form/gezinslid-form.component';
+import { ActiviteitFormComponent } from './activiteit/activiteit-form/activiteit-form.component';
+import { ActiviteitDashboardComponent } from './activiteit/activiteit-dashboard/activiteit-dashboard.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'activiteit-dashboard',
     pathMatch: 'full',
     canActivate: [AuthGuard]
   }, {
@@ -46,6 +48,14 @@ export const routes: Routes = [
   }, {
     path: 'gezinslid-form',
     component: GezinslidFormComponent,
+    canActivate: [AuthGuard]
+  }, {
+    path: 'activiteit-dashboard',
+    component: ActiviteitDashboardComponent,
+    canActivate: [AuthGuard]
+  }, {
+    path: 'activiteit-form',
+    component: ActiviteitFormComponent,
     canActivate: [AuthGuard]
   }, {
     path: '',
