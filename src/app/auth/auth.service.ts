@@ -35,6 +35,10 @@ export class AuthService {
     return this.firestore.collection<Gebruiker>('gebruikers').snapshotChanges();
   }
 
+  getGebruiker(id: string) {
+    return this.firestore.collection<Gebruiker>('gebruikers').doc(id).get();
+  }
+
   createGebruiker(gebruiker: Gebruiker) {
     return this.firestore.collection('gebruikers').add(gebruiker);
   }
@@ -46,7 +50,7 @@ export class AuthService {
 
   updateGebruiker(gebruiker: Gebruiker) {
     //delete gebruiker.id;
-    this.firestore.collection('gebruikers').doc(gebruiker.id).update(gebruiker);
+    return this.firestore.collection('gebruikers').doc(gebruiker.id).update(gebruiker);
   }
 
   // Sign in with Facebook
@@ -100,7 +104,7 @@ export class AuthService {
             let updatedGebruiker = doc.data() as Gebruiker;
             updatedGebruiker.id = doc.id;
             updatedGebruiker.linkeduniqueIDEmail = result.user.uid;
-            classContext.updateGebruiker(updatedGebruiker);
+            classContext.updateGebruiker(updatedGebruiker).then();
           });
         }
       });
@@ -154,7 +158,7 @@ export class AuthService {
               updatedGebruiker.id = doc.id;
              
               updatedGebruiker.linkeduniqueIDFB = result.user.uid;
-              classContext.updateGebruiker(updatedGebruiker);
+              classContext.updateGebruiker(updatedGebruiker).then();
 
               localStorage.setItem('gebruiker', JSON.stringify(updatedGebruiker));
 

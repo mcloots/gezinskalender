@@ -34,4 +34,21 @@ export class GezinDashboardComponent implements OnInit {
   ngOnInit() {
   }
 
+  getDisplayName(gebruiker: Gebruiker): string {
+    if (gebruiker.gebruikersnaam) {
+      return gebruiker.gebruikersnaam;
+    } else if (gebruiker.rol) {
+      return gebruiker.rol;
+    }
+
+    return '...';
+  }
+
+  editGebruiker(gebruiker: Gebruiker) {
+    this.router.navigate(['gezinslid-form', { gebruikerid: gebruiker.id }]);
+  }
+
+  deleteGebruiker(gebruiker: Gebruiker) {
+
+  }
 }
