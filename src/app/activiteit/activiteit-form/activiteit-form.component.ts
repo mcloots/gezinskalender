@@ -27,6 +27,7 @@ export class ActiviteitFormComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   gezinsleden: string[] = [];
+  gezinsledenFull: Gebruiker[] = [];
   filteredGezinsleden: Observable<string[]>;
   selectedGezinsleden: string[] = [];
 
@@ -42,15 +43,26 @@ export class ActiviteitFormComponent implements OnInit {
     this.gezinService.getGebruikersByGezinID(gebruiker.gezinid).pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Gebruiker;
+        return data;
+      }))
+    ).subscribe(result => {
+      this.gezinsledenFull = result;
+    });
+
+    this.gezinService.getGebruikersByGezinID(gebruiker.gezinid).pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as Gebruiker;
         return data.gebruikersnaam;
       }))
     ).subscribe(result => {
       this.gezinsleden = result;
 
       console.log(this.ngForm.controls);
-      this.filteredGezinsleden = this.ngForm.controls['wie'].valueChanges.pipe(
-        startWith(null),
-        map((gezinslid: string | null) => gezinslid ? this._filter(gezinslid) : this.gezinsleden.slice()));
+      if (this.ngForm.controls['wie']) {
+        this.filteredGezinsleden = this.ngForm.controls['wie'].valueChanges.pipe(
+          startWith(null),
+          map((gezinslid: string | null) => gezinslid ? this._filter(gezinslid) : this.gezinsleden.slice()));
+      }
     });
 
     let activiteitid = this.route.snapshot.paramMap.get("activiteitid");
@@ -66,6 +78,7 @@ export class ActiviteitFormComponent implements OnInit {
 
   postActiviteit() {
     if (this.isAdd) {
+      this.activiteitModel.onderwerpen = this.selectedGezinsleden;
       this.activiteitModel.gezinid = (JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker).gezinid;
       let activiteitToAdd = JSON.parse(JSON.stringify(this.activiteitModel));
       this.activiteitService.createActiviteit(activiteitToAdd).then(r => {

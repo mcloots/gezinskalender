@@ -15,6 +15,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatRadioModule } from '@angular/material/radio';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -33,6 +34,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatAutocompleteModule,
     MatChipsModule,
+    MatRadioModule,
     FormsModule,
     ReactiveFormsModule
   ],
@@ -56,6 +58,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatNativeDateModule,
     MatAutocompleteModule,
     MatChipsModule,
+    MatRadioModule,
     FormsModule,
     ReactiveFormsModule
   ]

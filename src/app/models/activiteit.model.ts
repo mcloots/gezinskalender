@@ -5,4 +5,7 @@ export class Activiteit {
     gezinid: string;
     gebruikerid: string;
     wie: string;
+    onderwerpen: string[];
+    uitvoerder: string;
+    uitvoerderid: string;
 }
