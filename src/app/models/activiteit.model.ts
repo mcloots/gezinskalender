@@ -4,4 +4,5 @@ export class Activiteit {
     datum: Date;
     gezinid: string;
     gebruikerid: string;
+    wie: string;
 }

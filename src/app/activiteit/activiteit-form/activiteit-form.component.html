@@ -1,35 +1,56 @@
 <div class="main-content">
-    <div class="contaier-fluid">
-       <div class="row">
-          <div class="col-md-8">
-             <div class="card">
-                <div class="card-header card-header-danger">
-                   <h4 class="card-title">Activiteit {{getActionText()}}</h4>
-                   <p class="card-category">Vul hier de gegevens van de activiteit in.</p>
-                </div>
-                <div class="card-body">
-                   <form #activiteitForm="ngForm" (ngSubmit)="postActiviteit()">
-                      <div class="row">
-                         <div class="col-12">
-                            <mat-form-field>
-                               <input matInput type="text" required
-                                  placeholder="Omschrijving" name="omschrijving" [(ngModel)]="activiteitModel.omschrijving">
-                            </mat-form-field>
-                         </div>   
-                         <div class="col-12">
-                             <mat-form-field>
-                                <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Datum" [(ngModel)]="activiteitModel.datum" required name="datum">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                             </mat-form-field>
-                         </div>
-                      </div>
-                      <button mat-raised-button [disabled]="!activiteitForm.form.valid" type="submit"
-                         class="btn btn-danger mt-2">Activiteit {{getActionText()}}</button>
-                   </form>
-                </div>
-             </div>
-          </div>
-       </div>
-    </div>
- </div>
+   <div class="contaier-fluid">
+      <div class="row">
+         <div class="col-md-8">
+            <div class="card">
+               <div class="card-header card-header-danger">
+                  <h4 class="card-title">Activiteit {{getActionText()}}</h4>
+                  <p class="card-category">Vul hier de gegevens van de activiteit in.</p>
+               </div>
+               <div class="card-body">
+                  <form #activiteitForm="ngForm" (ngSubmit)="postActiviteit()">
+                     <div class="row">
+                        <div class="col-12">
+                           <mat-form-field>
+                              <input matInput [min]="minDate" [matDatepicker]="picker" placeholder="Datum"
+                                 [(ngModel)]="activiteitModel.datum" required name="datum">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                           </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                           <mat-form-field>
+                              <input matInput type="text" required placeholder="Omschrijving" name="omschrijving"
+                                 [(ngModel)]="activiteitModel.omschrijving">
+                           </mat-form-field>
+                        </div>
+                        <div class="col-12">
+                           <mat-form-field>
+                              <mat-chip-list #chipList aria-label="Wie">
+                                 <mat-chip *ngFor="let gezinslid of selectedGezinsleden" [selectable]="selectable"
+                                    [removable]="removable" (removed)="remove(gezinslid)">
+                                    {{gezinslid}}
+                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                 </mat-chip>
+                                 <input placeholder="Wie" #gezinslidInput [matAutocomplete]="auto"
+                                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                    [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
+                                    [(ngModel)]="activiteitModel.wie" name="wie">
+                              </mat-chip-list>
+                              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                 <mat-option *ngFor="let gezinslid of filteredGezinsleden | async" [value]="gezinslid">
+                                    {{gezinslid}}
+                                 </mat-option>
+                              </mat-autocomplete>
+                           </mat-form-field>
+                        </div>
+                     </div>
+                     <button mat-raised-button [disabled]="!activiteitForm.form.valid" type="submit"
+                        class="btn btn-danger mt-2">Activiteit {{getActionText()}}</button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
