@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Activiteit } from 'app/models/activiteit.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Gebruiker } from 'app/auth/models/gebruiker.model';
@@ -38,11 +38,6 @@ export class ActiviteitFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.filteredGezinsleden = this.ngForm.control.get('wie').valueChanges.pipe(
-      startWith(null),
-      map((gezinslid: string | null) => gezinslid ? this._filter(gezinslid) : this.gezinsleden.slice()));
-
-
     let gebruiker = JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker;
     this.gezinService.getGebruikersByGezinID(gebruiker.gezinid).pipe(
       map(actions => actions.map(a => {
@@ -51,6 +46,11 @@ export class ActiviteitFormComponent implements OnInit {
       }))
     ).subscribe(result => {
       this.gezinsleden = result;
+
+      console.log(this.ngForm.controls);
+      this.filteredGezinsleden = this.ngForm.controls['wie'].valueChanges.pipe(
+        startWith(null),
+        map((gezinslid: string | null) => gezinslid ? this._filter(gezinslid) : this.gezinsleden.slice()));
     });
 
     let activiteitid = this.route.snapshot.paramMap.get("activiteitid");
@@ -95,6 +95,7 @@ export class ActiviteitFormComponent implements OnInit {
       // Add our gezinslid
       if ((value || '').trim()) {
         this.selectedGezinsleden.push(value.trim());
+        console.log(this.selectedGezinsleden);
       }
 
       // Reset the input value

@@ -5,7 +5,7 @@
             <div class="card">
                <div class="card-header card-header-danger">
                   <h4 class="card-title">Activiteit {{getActionText()}}</h4>
-                  <p class="card-category">Vul hier de gegevens van de activiteit in.</p>
+                  <p class="card-category">Vul hier de gegevens van de activiteit in. {{activiteitModel | json}}</p>
                </div>
                <div class="card-body">
                   <form #activiteitForm="ngForm" (ngSubmit)="postActiviteit()">
