@@ -10,6 +10,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
+import { filter } from 'rxjs-compat/operator/filter';
 
 @Component({
   selector: 'app-activiteit-form',
@@ -40,9 +41,10 @@ export class ActiviteitFormComponent implements OnInit {
 
   ngOnInit() {
     let gebruiker = JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker;
-    this.gezinService.getGebruikersByGezinID(gebruiker.gezinid).pipe(
+    this.gezinService.getUitvoerendeGebruikersByGezinID(gebruiker.gezinid).pipe(
       map(actions => actions.map(a => {
-        const data = a.payload.doc.data() as Gebruiker;
+        let data = a.payload.doc.data() as Gebruiker;
+        data.id = a.payload.doc.id;
         return data;
       }))
     ).subscribe(result => {
@@ -52,6 +54,7 @@ export class ActiviteitFormComponent implements OnInit {
     this.gezinService.getGebruikersByGezinID(gebruiker.gezinid).pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Gebruiker;
+        
         return data.gebruikersnaam;
       }))
     ).subscribe(result => {

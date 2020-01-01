@@ -1,6 +1,6 @@
 {
   "name": "gezinskalender",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --o --ssl true --port 2078",

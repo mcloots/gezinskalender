@@ -27,6 +27,9 @@
                                  [(ngModel)]="gebruikerModel.rol">
                            </mat-form-field>
                         </div>
+                        <div class="col-12">
+                           <mat-checkbox [(ngModel)]="gebruikerModel.isUitvoerder" name="isuitvoerder">Kan activiteiten uitvoeren</mat-checkbox>
+                        </div>
                      </div>
                      <button mat-raised-button [disabled]="!gezinslidForm.form.valid" type="submit"
                         class="btn btn-danger mt-2">Gezinslid {{getActionText()}}</button>

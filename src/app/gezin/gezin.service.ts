@@ -10,7 +10,7 @@ export class GezinService {
   constructor(private firestore: AngularFirestore) { }
 
   getGebruiker() {
-    let gebruikerCurrent = JSON.parse( localStorage.getItem('gebruiker'));
+    let gebruikerCurrent = JSON.parse(localStorage.getItem('gebruiker'));
     let gebruikerDocID = gebruikerCurrent.id;
     return this.firestore.collectionGroup('gebruikers', ref => ref.where('id', '==', gebruikerDocID));
   }
@@ -20,6 +20,10 @@ export class GezinService {
 
   getGebruikersByGezinID(gezinID: string) {
     return this.firestore.collection('gebruikers', ref => ref.where('gezinid', '==', gezinID)).snapshotChanges();
+  }
+
+  getUitvoerendeGebruikersByGezinID(gezinID: string) {
+    return this.firestore.collection('gebruikers', ref => ref.where('gezinid', '==', gezinID).where('isUitvoerder', '==', true).orderBy('gebruikersnaam','asc')).snapshotChanges();
   }
 
   createGezin(gezin: Gezin) {

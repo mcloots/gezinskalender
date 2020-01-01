@@ -11,4 +11,5 @@ export class Gebruiker {
     linkeduniqueIDFB: string;
     linkeduniqueIDEmail:string;
     gezinid: string;
+    isUitvoerder: boolean;
 }
