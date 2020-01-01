@@ -8,4 +8,7 @@ export class Activiteit {
     onderwerpen: string[];
     uitvoerder: string;
     uitvoerderid: string;
+    tijdstipuur: number;
+    tijdstipminuten: number;
+    datumjs: number;
 }

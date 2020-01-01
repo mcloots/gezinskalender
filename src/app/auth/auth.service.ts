@@ -39,6 +39,10 @@ export class AuthService {
     return this.firestore.collection<Gebruiker>('gebruikers').doc(id).get();
   }
 
+  getGebruikerByID(id: string) {
+    return this.firestore.collection<Gebruiker>('gebruikers', ref => ref.where('id', '==', id)).valueChanges();
+  }
+
   createGebruiker(gebruiker: Gebruiker) {
     return this.firestore.collection('gebruikers').add(gebruiker);
   }

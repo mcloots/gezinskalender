@@ -9,8 +9,14 @@ export class ActiviteitService {
 
   constructor(private firestore: AngularFirestore) { }
 
-   getActiviteitenByGezinID(gezinID: string) {
-    return this.firestore.collection('activiteiten', ref => ref.where('gezinid', '==', gezinID).orderBy('datum','asc')).snapshotChanges();
+  getActiviteitenByGezinID(gezinID: string) {
+    return this.firestore.collection<Activiteit>('activiteiten', ref => ref.where('gezinid', '==', gezinID).orderBy('datum', 'asc').orderBy('tijdstipuur', 'asc').orderBy('tijdstipminuten', 'asc')).snapshotChanges();
+  }
+
+  getActiviteitenByGezinID2(gezinID: string) {
+    var date = new Date();
+    date.setDate(date.getDate() - 1);
+    return this.firestore.collection<Activiteit>('activiteiten', ref => ref.where('gezinid', '==', gezinID).where('datumjs', '>=', date.getTime()).orderBy('datumjs', 'asc').orderBy('tijdstipuur', 'asc').orderBy('tijdstipminuten', 'asc')).valueChanges();
   }
 
   createActiviteit(activiteit: Activiteit) {

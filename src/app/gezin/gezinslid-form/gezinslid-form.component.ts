@@ -31,7 +31,11 @@ export class GezinslidFormComponent implements OnInit {
       this.gebruikerModel.gezinid = (JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker).gezinid;
       let gebruikerToAdd = JSON.parse(JSON.stringify(this.gebruikerModel));
       this.authService.createGebruiker(gebruikerToAdd).then(r => {
-        this.router.navigate(['gezin-dashboard']);
+        //update so we set id as property on document
+        gebruikerToAdd.id = r.id;
+        this.authService.updateGebruiker(gebruikerToAdd).then(r => {
+          this.router.navigate(['gezin-dashboard']);
+        });
       });
     } else {
       let gebruikerToUpdate = JSON.parse(JSON.stringify(this.gebruikerModel));
