@@ -76,11 +76,12 @@ export class ActiviteitFormComponent implements OnInit {
     let activiteitid = this.route.snapshot.paramMap.get("activiteitid");
     if (activiteitid) {
       this.isAdd = false;
-      //Get gebruiker and set model
-      // this.authService.getGebruiker(gebruikerid).subscribe(g => {
-      //   this.gebruikerModel = (g.data() as Gebruiker);
-      //   this.gebruikerModel.id = g.id;
-      // })
+      //Get activiteit and set model
+      this.activiteitService.getActiviteit(activiteitid).subscribe(g => {
+        this.activiteitModel = (g.data() as Activiteit);
+        this.activiteitModel.id = g.id;
+        this.selectedGezinsleden= this.activiteitModel.onderwerpen;
+      })
     }
   }
 

@@ -29,6 +29,11 @@ export class ActiviteitDashboardComponent implements OnInit {
     //   }))
     // );
     this.joined$ = this.activiteitService.getActiviteitenByGezinID2(gebruiker.gezinid).pipe(
+      map(act => act.map(a => {
+        const data = a.payload.doc.data() as Activiteit;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      })),
       switchMap(activiteiten => {
         const uitvoerderIds = uniq(activiteiten.map(bp => bp.uitvoerderid))
         return combineLatest(
@@ -44,6 +49,7 @@ export class ActiviteitDashboardComponent implements OnInit {
       }),
       map(([activiteiten, uitvoerders]) => {
         return activiteiten.map(ac => {
+          console.log(ac);
           return {
             ...ac,
             uitvoerder: uitvoerders.find(a => (a as Gebruiker).id === ac.uitvoerderid)
@@ -70,9 +76,17 @@ export class ActiviteitDashboardComponent implements OnInit {
 
   calculateClasses(uitvoerderid: string) {
     let gebruiker = JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker;
-    if(gebruiker.id == uitvoerderid) {
+    if (gebruiker.id == uitvoerderid) {
       return "myActivity";
     }
+  }
+
+  editActiviteit(activiteit: Activiteit) {
+    this.router.navigate(['activiteit-form', { activiteitid: activiteit.id }]);
+  }
+
+  deleteActiviteit(activiteit: Activiteit) {
+    this.activiteitService.deleteActiviteit(activiteit.id);
   }
 
 }
