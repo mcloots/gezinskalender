@@ -30,4 +30,8 @@ export class ActiviteitService {
   createActiviteit(activiteit: Activiteit) {
     return this.firestore.collection('activiteiten').add(activiteit);
   }
+
+  updateActiviteit(activiteit: Activiteit) {
+    return this.firestore.collection('activiteiten').doc(activiteit.id).update(activiteit);
+  }
 }

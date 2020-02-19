@@ -32,8 +32,8 @@ export class ActiviteitFormComponent implements OnInit {
   filteredGezinsleden: Observable<string[]>;
   selectedGezinsleden: string[] = [];
 
-  uren: number[] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
-  minuten: number[] = [0,5,10,15,20,25,30,35,40,45,50,55];
+  uren: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+  minuten: number[] = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
   @ViewChild('gezinslidInput', { static: false }) gezinslidInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
@@ -59,7 +59,7 @@ export class ActiviteitFormComponent implements OnInit {
     this.gezinService.getGebruikersByGezinID(gebruiker.gezinid).pipe(
       map(actions => actions.map(a => {
         const data = a.payload.doc.data() as Gebruiker;
-        
+
         return data.gebruikersnaam;
       }))
     ).subscribe(result => {
@@ -80,25 +80,29 @@ export class ActiviteitFormComponent implements OnInit {
       this.activiteitService.getActiviteit(activiteitid).subscribe(g => {
         this.activiteitModel = (g.data() as Activiteit);
         this.activiteitModel.id = g.id;
-        this.selectedGezinsleden= this.activiteitModel.onderwerpen;
+        this.selectedGezinsleden = this.activiteitModel.onderwerpen;
       })
     }
   }
 
   postActiviteit() {
-    if (this.isAdd) {
-      this.activiteitModel.onderwerpen = this.selectedGezinsleden;
-      this.activiteitModel.gezinid = (JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker).gezinid;
+    console.log(this.activiteitModel);
+    this.activiteitModel.onderwerpen = this.selectedGezinsleden;
+    this.activiteitModel.gezinid = (JSON.parse(localStorage.getItem('gebruiker')) as Gebruiker).gezinid;
+    if (typeof this.activiteitModel.datum.getTime === 'function') {
       this.activiteitModel.datumjs = this.activiteitModel.datum.getTime();
+    }
+    if (this.isAdd) {
+
       let activiteitToAdd = JSON.parse(JSON.stringify(this.activiteitModel));
       this.activiteitService.createActiviteit(activiteitToAdd).then(r => {
         this.router.navigate(['activiteit-dashboard']);
       });
     } else {
-      // let gebruikerToUpdate = JSON.parse(JSON.stringify(this.gebruikerModel));
-      // this.authService.updateGebruiker(gebruikerToUpdate).then(r => {
-      //   this.router.navigate(['gezin-dashboard']);
-      // });
+      let activiteitToUpdate = JSON.parse(JSON.stringify(this.activiteitModel));
+      this.activiteitService.updateActiviteit(activiteitToUpdate).then(r => {
+        this.router.navigate(['activiteit-dashboard']);
+      });
     }
   }
 
